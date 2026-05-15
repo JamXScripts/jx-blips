@@ -106,6 +106,10 @@ CreateThread(function()
 end)
 
 RegisterCommand('createblips', function()
+    TriggerServerEvent('jx-blips:checkAdmin')
+end)
+
+RegisterNetEvent('jx-blips:adminAllowed', function()
     local opened = false
     local function OnReceive(blips)
         if opened then return end
@@ -140,7 +144,7 @@ function OpenMenu(blips)
                 local categoryId    = tonumber(input[5]) or 0
                 local alwaysVisible = (input[6] == true)
                 DebugPrint('Creation : sprite=' ..
-                tostring(input[2]) .. ' scale=' .. tostring(input[4]) .. ' category=' .. tostring(categoryId))
+                    tostring(input[2]) .. ' scale=' .. tostring(input[4]) .. ' category=' .. tostring(categoryId))
                 TriggerServerEvent('jx-blips:create', {
                     name          = input[1],
                     sprite        = tonumber(input[2]),
