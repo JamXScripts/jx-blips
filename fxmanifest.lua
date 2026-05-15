@@ -11,7 +11,7 @@ lua54 'yes'
 name 'jx-blips'
 author 'JamX Scripts'
 description 'Permanent blip system with ox_lib menu, categories, Discord logs and minimap option'
-version '1.0.0'
+version '1.0.1'
 
 shared_scripts {
     '@ox_lib/init.lua',
