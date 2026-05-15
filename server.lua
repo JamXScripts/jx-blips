@@ -68,7 +68,7 @@ local function LoadBlips()
                     blip.sprite        = tonumber(blip.sprite) or Config.DefaultSprite
                     blip.color         = tonumber(blip.color) or Config.DefaultColor
                     blip.alwaysVisible = (blip.alwaysVisible == nil) and Config.DefaultAlwaysVisible or
-                    blip.alwaysVisible
+                        blip.alwaysVisible
                     BlipsData[id]      = blip
                 end
             end
@@ -128,11 +128,11 @@ function AddBlip(coords, sprite, color, scale, name, category, alwaysVisible)
 
     SaveBlips()
     DebugPrint('Blip added id=' ..
-    id ..
-    ' name=' ..
-    tostring(name) ..
-    ' scale=' ..
-    tostring(safeScale) .. ' category=' .. tostring(category) .. ' alwaysVisible=' .. tostring(alwaysVisible))
+        id ..
+        ' name=' ..
+        tostring(name) ..
+        ' scale=' ..
+        tostring(safeScale) .. ' category=' .. tostring(category) .. ' alwaysVisible=' .. tostring(alwaysVisible))
     TriggerClientEvent('jx-blips:refreshAll', -1, BlipsData)
     return id
 end
@@ -143,8 +143,10 @@ function UpdateBlip(id, data)
     if data.name then BlipsData[id].name = tostring(data.name) end
     if data.sprite then BlipsData[id].sprite = tonumber(data.sprite) end
     if data.color then BlipsData[id].color = tonumber(data.color) end
-    if data.scale then BlipsData[id].scale = math.floor(((tonumber(data.scale) or Config.DefaultScale) * 100) + 0.5) /
-        100 end
+    if data.scale then
+        BlipsData[id].scale = math.floor(((tonumber(data.scale) or Config.DefaultScale) * 100) + 0.5) /
+            100
+    end
     if data.category ~= nil then BlipsData[id].category = tonumber(data.category) or 0 end
     if data.alwaysVisible ~= nil then BlipsData[id].alwaysVisible = data.alwaysVisible end
     SaveBlips()
@@ -174,6 +176,19 @@ end
 -- Network events
 RegisterNetEvent('jx-blips:requestList', function()
     TriggerClientEvent('jx-blips:receiveList', source, BlipsData)
+end)
+
+RegisterNetEvent('jx-blips:checkAdmin', function()
+    local src = source
+    if not IsAdmin(src) then
+        TriggerClientEvent('chat:addMessage', src, {
+            color = { 255, 0, 0 },
+            multiline = true,
+            args = { '', 'Access denied for command createblips.' }
+        })
+        return
+    end
+    TriggerClientEvent('jx-blips:adminAllowed', src)
 end)
 
 RegisterNetEvent('jx-blips:create', function(data)
